@@ -14,6 +14,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/auth/tx"
 	"github.com/gogo/protobuf/jsonpb"
 	"github.com/gogo/protobuf/proto"
+
+	relayerTypes "github.com/cosmos/relayer/types"
 )
 
 // MakeEncodingConfig returns the encoding txConfig for the chain
@@ -32,6 +34,7 @@ func (c *Chain) MakeEncodingConfig() params.EncodingConfig {
 
 	std.RegisterLegacyAminoCodec(encodingConfig.Amino)
 	std.RegisterInterfaces(encodingConfig.InterfaceRegistry)
+	relayerTypes.RegisterInterfaces(encodingConfig.InterfaceRegistry)
 	simapp.ModuleBasics.RegisterLegacyAminoCodec(encodingConfig.Amino)
 	simapp.ModuleBasics.RegisterInterfaces(encodingConfig.InterfaceRegistry)
 
