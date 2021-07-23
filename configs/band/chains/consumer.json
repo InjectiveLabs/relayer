@@ -1,11 +1,11 @@
 {
-  "key": "conskey",
-  "chain-id": "consumer",
-  "rpc-addr": "http://localhost:26557",
-  "account-prefix": "cosmos",
+  "key": "alice",
+  "chain-id": "injective-1",
+  "rpc-addr": "http://localhost:26657",
+  "account-prefix": "inj",
   "gas": 200000,
   "gas-adjustment": 1.5,
-  "gas-prices": "0.0stake",
-  "default-denom": "stake",
+  "gas-prices": "0.0inj",
+  "default-denom": "inj",
   "trusting-period": "336h"
 }

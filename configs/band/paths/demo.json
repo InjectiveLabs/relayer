@@ -9,13 +9,14 @@
     "order": "unordered"
   },
   "dst": {
-    "chain-id": "consumer",
+    "chain-id": "injective-1",
     "client-id": "",
     "connection-id": "",
     "channel-id": "",
-    "port-id": "consuming",
+    "port-id": "oracle",
     "version": "bandchain-1",
     "order": "unordered"
   },
   "strategy": { "type": "naive" }
 }
+
