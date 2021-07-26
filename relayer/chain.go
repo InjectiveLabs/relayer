@@ -309,8 +309,10 @@ func (c *Chain) SendMsgs(msgs []sdk.Msg) (*sdk.TxResponse, bool, error) {
 		return nil, false, err
 	}
 
+	done := c.UseSDKContext()
 	// Attach the signature to the transaction
 	err = tx.Sign(txf, c.Key, txb, false)
+	done()
 	if err != nil {
 		return nil, false, err
 	}

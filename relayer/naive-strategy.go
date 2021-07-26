@@ -734,7 +734,8 @@ func relayPacketsFromResultBlockResults(src, dst *Chain, sequence uint64, res *c
 	dstPE := dst.PathEnd
 
 	found := false
-	for _, e := range res.EndBlockEvents {
+	blockEvents := append(res.BeginBlockEvents, res.EndBlockEvents...)
+	for _, e := range blockEvents {
 		if e.Type == spTag {
 			// NOTE: Src and Dst are switched here
 			rp := &relayMsgRecvPacket{pass: false}
