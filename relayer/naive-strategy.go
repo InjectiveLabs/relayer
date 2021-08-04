@@ -1,6 +1,7 @@
 package relayer
 
 import (
+	"encoding/json"
 	"fmt"
 	"strconv"
 
@@ -123,12 +124,22 @@ func (nrs *NaiveStrategy) UnrelayedSequences(src, dst *Chain) (*RelaySequences, 
 	eg.Go(func() error {
 		// Query all packets sent by src that have been received by dst
 		rs.Src, err = dst.QueryUnreceivedPackets(dst.MustGetLatestLightHeight(), srcPacketSeq)
+		if src.debug {
+			if out, err := json.Marshal(rs.Src); err != nil {
+				src.logUnreceivedPackets(dst, "commitments", string(out))
+			}
+		}
 		return err
 	})
 
 	eg.Go(func() error {
 		// Query all packets sent by dst that have been received by src
 		rs.Dst, err = src.QueryUnreceivedPackets(src.MustGetLatestLightHeight(), dstPacketSeq)
+		if dst.debug {
+			if out, err := json.Marshal(rs.Dst); err != nil {
+				dst.logUnreceivedPackets(src, "commitments", string(out))
+			}
+		}
 		return err
 	})
 
@@ -213,12 +224,22 @@ func (nrs *NaiveStrategy) UnrelayedAcknowledgements(src, dst *Chain) (*RelaySequ
 	eg.Go(func() error {
 		// Query all packets sent by src that have been received by dst
 		rs.Src, err = dst.QueryUnreceivedAcknowledgements(dst.MustGetLatestLightHeight(), srcPacketSeq)
+		if src.debug {
+			if out, err := json.Marshal(rs.Src); err != nil {
+				src.logUnreceivedPackets(dst, "acks", string(out))
+			}
+		}
 		return err
 	})
 
 	eg.Go(func() error {
 		// Query all packets sent by dst that have been received by src
 		rs.Dst, err = src.QueryUnreceivedAcknowledgements(src.MustGetLatestLightHeight(), dstPacketSeq)
+		if dst.debug {
+			if out, err := json.Marshal(rs.Dst); err != nil {
+				dst.logUnreceivedPackets(src, "acks", string(out))
+			}
+		}
 		return err
 	})
 
@@ -880,7 +901,7 @@ func relayPacketsFromResultTx(src, dst *Chain, res *ctypes.ResultTx) ([]relayPac
 			}
 
 			// fetch the header which represents a block produced on destination
-			block, err := src.GetIBCUpdateHeader(dst)
+			block, err := dst.GetIBCUpdateHeader(src)
 			if err != nil {
 				return nil, nil, err
 			}
