@@ -738,6 +738,7 @@ func relayPacketsFromResultBlockResults(src, dst *Chain, sequence uint64, res *c
 	for _, e := range blockEvents {
 		if e.Type == spTag {
 			// NOTE: Src and Dst are switched here
+			found = false
 			rp := &relayMsgRecvPacket{pass: false}
 			for _, p := range e.Attributes {
 				if string(p.Key) == srcChanTag {
